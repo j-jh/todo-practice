@@ -10,28 +10,23 @@ export default function TodoList({ todos }) {
     const [dataFilter, setDataFilter] = useState([]);
     const [idFilter, setIdFilter] = useState(0);
     // map ids
-    const [uniqueId, setUniqueId] = useState([]);
-    /*
-    .filter(
-        item => {
-            if (idFilter === 0) {
-                return item;
-            } else {
-                return item.id === searchId;
-            }
-        }
-    )
-    */
+    const [uniqueIdList, setUniqueIdList] = useState([]);
+
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
-        handleDataFilter();
         handleUniqueId();
-    }, [showFilter, todos]);
+        handleDataFilter();
+    }, [showFilter, idFilter, search, todos])
 
     function handleUniqueId() {
         const idSet = new Set(todos.map(item => item.userId));
-        setUniqueId([...idSet]);
+        setUniqueIdList([...idSet]);
         console.log([...idSet]);
+    }
+
+    function handleSearch(e) {
+        setSearch(e.target.value);
     }
 
     function handleDataFilter() {
@@ -44,7 +39,23 @@ export default function TodoList({ todos }) {
                 } else {
                     return item.completed === false;
                 }
-            })
+            }).filter(
+                item => {
+                    if (idFilter === 0) {
+                        return item;
+                    } else {
+                        return item.userId === idFilter;
+                    }
+                }
+            ).filter(
+                item => {
+                    if (search === "") {
+                        return item;
+                    } else {
+                        return item.title.toLowerCase().includes(search.toLowerCase())
+                    }
+                }
+            )
         )
     }
 
@@ -52,8 +63,15 @@ export default function TodoList({ todos }) {
         setShowFilter(e.target.value);
         console.log(e.target.value);
     }
-    // get filter, create array, return and map
+    function handleIdSelection(e) {
+        setIdFilter(Number(e.target.value));
+        console.log(e.target.value);
+    }
 
+    function handleResetFilter() {
+        setIdFilter(0);
+        setShowFilter("All");
+    }
 
     return (
         <div>
@@ -65,14 +83,32 @@ export default function TodoList({ todos }) {
                         <th>| Completion |</th>
                     </tr>
                     <tr>
-                        <th></th>
-                        <th></th>
                         <th>
-                            <select onChange={handleShowFilter}>
+                            <select onChange={handleIdSelection}
+                                value={idFilter}>
+                                <option value={0}>
+                                    All
+                                </option>
+                                {uniqueIdList.map(num =>
+                                    <option key={num}
+                                        value={num}>{num}
+                                    </option>)}
+                            </select>
+
+                        </th>
+                        <th>
+                            <input value={search} onChange={handleSearch} />
+                            <button onClick={() => setSearch("")}>Clear</button>
+                        </th>
+                        <th>
+                            <select value={showFilter} onChange={handleShowFilter}>
                                 <option value={"All"}>All</option>
                                 <option value={"Complete"}>Complete</option>
                                 <option value={"Incomplete"}>Incomplete</option>
                             </select>
+                        </th>
+                        <th>
+                            <button onClick={handleResetFilter}>Clear</button>
                         </th>
                     </tr>
                     <tr>
@@ -82,9 +118,7 @@ export default function TodoList({ todos }) {
                     </tr>
                 </thead>
                 <tbody>
-
-                    {dataFilter.map(item => <TodoItem todo={item} key={item.id} />)}
-
+                    {dataFilter.map(item => <TodoItem key={item.id} todo={item} />)}
                 </tbody>
             </table>
         </div>
