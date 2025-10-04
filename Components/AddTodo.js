@@ -2,7 +2,28 @@
 import { useState } from "react";
 export default function AddTodo() {
     const [formData, setFormData] = useState({ userId: "", title: "" });
-    
+    async function fetchPost() {
+        try {
+            const request = await fetch(`https://jsonplaceholder.typicode.com/todos`,
+                {
+                    method: `POST`,
+                    body: JSON.stringify({
+                        userId: "",
+                        title: "",
+                        completed: false
+                    })
+                }
+            )
+            if (!request.ok) {
+                console.log("Failed to post");
+                return;
+            }
+            const result = await request.json();
+            console.log(result);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
     function handleFormSubmit(e) {
         e.preventDefault();
