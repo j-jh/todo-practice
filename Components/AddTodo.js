@@ -21,7 +21,7 @@ export default function AddTodo({ setTodoObj }) {
             }
             // update 
             const result = await request.json();
-            console.log(result);
+            // console.log(result);
             setTodoObj(
                 prev => ([
                     ...prev,
@@ -42,7 +42,7 @@ export default function AddTodo({ setTodoObj }) {
     function handleFormSubmit(e) {
         e.preventDefault();
         const formObj = new FormData(e.target);
-        console.log(formObj);
+        // console.log(formObj);
         fetchPost();
     }
 
@@ -57,13 +57,13 @@ export default function AddTodo({ setTodoObj }) {
                     value={formData.userId}
                     onChange={
                         e => setFormData(prev =>
-                            ({ ...formData, userId: e.target.value })
+                            ({ ...prev, userId: e.target.value })
                         )} />
                 <input name="title"
                     value={formData.title}
                     onChange={
                         e => setFormData(prev =>
-                            ({ ...formData, title: e.target.value })
+                            ({ ...prev, title: e.target.value })
                         )} />
                 <button type="submit">Add</button>
                 <button onClick={clearForm}>Clear</button>
