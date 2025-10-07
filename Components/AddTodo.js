@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-export default function AddTodo() {
+export default function AddTodo({ setTodoObj }) {
     const [formData, setFormData] = useState({ userId: "", title: "" });
+
     async function fetchPost() {
         try {
             const request = await fetch(`https://jsonplaceholder.typicode.com/todos`,
@@ -18,8 +19,21 @@ export default function AddTodo() {
                 console.log("Failed to post");
                 return;
             }
+            // update 
             const result = await request.json();
             console.log(result);
+            setTodoObj(
+                prev => ([
+                    ...prev,
+                    {
+                        userId: formData.userId,
+                        title: formData.title,
+                        completed: false,
+                        id: Date.now()
+                    }
+
+                ])
+            )
         } catch (error) {
             console.log(error.message);
         }
@@ -27,8 +41,9 @@ export default function AddTodo() {
 
     function handleFormSubmit(e) {
         e.preventDefault();
-        const formdata = new FormData(e.target);
-        console.log(formdata);
+        const formObj = new FormData(e.target);
+        console.log(formObj);
+        fetchPost();
     }
 
     function clearForm() {
