@@ -1,6 +1,6 @@
 "use client";
 import TodoList from "@/Components/TodoList";
-
+import AddTodo from "./AddTodo";
 import { useState, useEffect } from "react";
 
 export default function TodoData() {
@@ -29,6 +29,7 @@ export default function TodoData() {
 
     return (
         <div>
+            <AddTodo setTodoObj={setTodoObj}/>
             <TodoList todos={todoObj}/>
         </div>
     );
