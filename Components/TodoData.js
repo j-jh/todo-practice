@@ -6,10 +6,13 @@ import { useState, useEffect } from "react";
 export default function TodoData() {
     const [todoObj, setTodoObj] = useState([]);
     useEffect(() => {
-        fetchData()
+        fetchData();
     }, []);
 
     // delete button?
+
+    const [userIdList, setUserIdList] = useState([]);
+
 
     async function fetchData() {
         try {
@@ -20,17 +23,19 @@ export default function TodoData() {
             }
             const result = await response.json();
             setTodoObj(result);
-            console.log(result);
+            const idSet = new Set(result.map(item => item.userId));
+            setUserIdList([...idSet]); 
+            // console.log(result);
+            // console.log(idSet);
         } catch (error) {
             console.log(error.message);
         }
     };
-    console.log("test");
 
     return (
         <div>
-            <AddTodo setTodoObj={setTodoObj}/>
-            <TodoList todos={todoObj}/>
+            <AddTodo  setUserIdList ={setUserIdList} userIdList={userIdList} setTodoObj={setTodoObj} />
+            <TodoList todos={todoObj} uniqueIdList={userIdList} />
         </div>
     );
 }

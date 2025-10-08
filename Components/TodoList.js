@@ -2,7 +2,7 @@
 import TodoItem from "./TodoItem"
 import { useState, useEffect } from "react";
 // Add filter to render by user, completion status
-export default function TodoList({ todos }) {
+export default function TodoList({ todos, uniqueIdList }) {
     // search by id, task
     // filter by completion
 
@@ -10,20 +10,20 @@ export default function TodoList({ todos }) {
     const [dataFilter, setDataFilter] = useState([]);
     const [idFilter, setIdFilter] = useState(0);
     // map ids
-    const [uniqueIdList, setUniqueIdList] = useState([]);
+    // const [uniqueIdList, setUniqueIdList] = useState([]);
 
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        handleUniqueId();
+        // handleUniqueId();
         handleDataFilter();
     }, [showFilter, idFilter, search, todos])
 
-    function handleUniqueId() {
-        const idSet = new Set(todos.map(item => item.userId));
-        setUniqueIdList([...idSet]);
-        console.log([...idSet]);
-    }
+    // function handleUniqueId() {
+    //     const idSet = new Set(todos.map(item => item.userId));
+    //     setUniqueIdList([...idSet]);
+    //     // console.log([...idSet]);
+    // }
 
     function handleSearch(e) {
         setSearch(e.target.value);
@@ -72,7 +72,8 @@ export default function TodoList({ todos }) {
         setIdFilter(0);
         setShowFilter("All");
     }
-
+    // pass delete button to each todo item
+    // filter by 
     return (
         <div>
             <table>
