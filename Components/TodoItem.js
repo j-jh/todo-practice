@@ -11,7 +11,9 @@ export default function TodoItem({ todo, showEditOptions }) {
             <tr>
                 <td>| {userId} </td>
                 <td>| {title} </td>
-                <td>| {completed ? "✅" : "❌"} |</td>
+                <td style={{ fontFamily: "monospace" }}>
+                    {completed ? "[\u00A0x\u00A0]" : "[\u00A0\u00A0\u00A0]"}
+                </td>
                 <td><DeleteTodo idToDelete={id} showEditOptions={showEditOptions} />
                     <EditTodo idToDelete={id} showEditOptions={showEditOptions} />
                 </td>
