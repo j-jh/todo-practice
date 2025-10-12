@@ -45,12 +45,12 @@ export default function AddTodo({ userIdList, setTodoObj, setUserIdList }) {
         e.preventDefault();
         let currUserId = formData.userId
         if (currUserId === "New User") {
-            currUserId = userIdList.length+1;
+            currUserId = userIdList.length + 1;
 
             setFormData(prev => ({
-                ... prev, userId: currUserId
+                ...prev, userId: currUserId
             }))
-            setUserIdList(prev => [... prev, currUserId]);
+            setUserIdList(prev => [...prev, currUserId]);
             console.log(userIdList);
         }
         // console.log(formObj);
@@ -60,39 +60,52 @@ export default function AddTodo({ userIdList, setTodoObj, setUserIdList }) {
 
     function clearForm(clearAll) {
         if (clearAll) {
-            setFormData({userId: "", title: "" });
+            setFormData({ userId: "", title: "" });
         }
-        setFormData(prev => ({... prev, title: "" }));
+        setFormData(prev => ({ ...prev, title: "" }));
     }
 
     function handleIdSelect(e) {
-        
+
         setFormData(prev => ({ ...prev, userId: e.target.value }))
         console.log(e.target.value);
     }
 
+    const [showAdd, setShowAdd] = useState(false);
     return (
         <div>
-            <form onSubmit={handleFormSubmit}>
-                <label>| User ID: </label>
-                <select value={formData.userId} onChange={handleIdSelect}>
-                    {userIdList.map(
-                        item => <option key={item} value={item}>
-                            {item}
-                        </option>
-                    )}
-                    <option key={userIdList.length} value={"New User"}>New User</option>
-                </select>
-                <label>| Item: </label>
-                <input name="title"
-                    value={formData.title}
-                    onChange={
-                        e => setFormData(prev =>
-                            ({ ...prev, title: e.target.value })
-                        )} />
-                <button type="submit">Add</button>
-                <button type="button" onClick={e => clearForm(true)}>Clear</button>
-            </form>
+            <button onClick={() => setShowAdd(prev => !prev)}>{!showAdd ? "Add Item" : "Close"} </button>
+            {showAdd &&
+                <>
+                    <form onSubmit={handleFormSubmit}>
+                        <br></br>
+                        <label>| User: </label>
+                        <select value={formData.userId} onChange={handleIdSelect}>
+                            {userIdList.map(
+                                item => <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            )}
+                            <option key={userIdList.length} value={"New User"}>New User</option>
+                        </select>
+                        <br></br>
+                        <label>| Item: </label>
+                        <textarea name="title"
+                            value={formData.title}
+                            onChange={
+                                e => setFormData(prev =>
+                                    ({ ...prev, title: e.target.value })
+                                )} />
+                        <br></br>
+                        <button type="submit">Add</button>
+                        <button type="button" onClick={e => clearForm(true)}>Clear</button>
+                        <br></br>
+                        <br></br>
+
+                    </form>
+                </>
+            }
+
         </div>
     )
 }
