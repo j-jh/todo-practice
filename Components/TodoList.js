@@ -11,6 +11,7 @@ export default function TodoList({ todos, uniqueIdList }) {
     const [idFilter, setIdFilter] = useState(0);
     // map ids
     // const [uniqueIdList, setUniqueIdList] = useState([]);
+    const [showEditOptions, setShowEditOptions] = useState(false);
 
     const [search, setSearch] = useState("");
 
@@ -82,6 +83,7 @@ export default function TodoList({ todos, uniqueIdList }) {
                         <th>| userId |</th>
                         <th> Task</th>
                         <th>| Completion |</th>
+                        <th> Options |</th>
                     </tr>
                     <tr>
                         <th>
@@ -110,16 +112,20 @@ export default function TodoList({ todos, uniqueIdList }) {
                         </th>
                         <th>
                             <button onClick={handleResetFilter}>Clear</button>
+                            <button onClick={
+                                () => setShowEditOptions(prev => !prev)
+                            }>Edit</button>
                         </th>
                     </tr>
                     <tr>
                         <th>----------</th>
                         <th>----------------------------------------------------------------------------------------------------</th>
                         <th>--------------------</th>
+                        <th>----------</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {dataFilter.map(item => <TodoItem key={item.id} todo={item} />)}
+                    {dataFilter.map(item => <TodoItem key={item.id} todo={item} showEditOptions={showEditOptions} />)}
                 </tbody>
             </table>
         </div>
